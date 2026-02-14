@@ -42,6 +42,7 @@
             line-height: 1.5;
         }
 
+        /* Botão estilizado como botão de ação, não apenas link */
         .btn-abrir {
             background: #ffffff;
             color: #000000;
@@ -52,6 +53,9 @@
             font-size: 16px;
             transition: 0.2s;
             text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
         }
 
         .btn-abrir:active {
@@ -70,7 +74,12 @@
     <h2>TikTok</h2>
     <p>Assista a vídeos curtos, descubra tendências e divirta-se com criadores do mundo todo.</p>
 
-    <a href="https://www.tiktok.com" target="_blank" class="btn-abrir">Assistir Agora</a>
+    <a href="https://www.tiktok.com/explore" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="btn-abrir">
+       Assistir Agora
+    </a>
 
 </body>
 </html>
