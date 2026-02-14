@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Web OS</title>
+    <link rel="stylesheet" href="estilos/principal.css">
+    <link rel="stylesheet" href="estilos/janelas.css">
+</head>
+<body>
+    
+    <div id="widget-sistema">
+    <div class="widget-item">
+        <span id="bateria-status">Bateria: --%</span>
+    </div>
+    <div class="widget-item">
+        <span id="data-atual">Carregando data...</span>
+    </div>
+</div>
+    
+    <main id="area-de-trabalho">
+        
+        <div class="icone" onclick="abrirJanela('calculadora', 'Calculadora')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2344/2344132.png" alt="App">
+            <span>Calculadora</span>
+        </div>
+
+        <div class="icone" onclick="abrirJanela('configuracoes', 'Configurações')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" alt="App">
+            <span>Ajustes</span>
+        </div>
+        
+        <div class="icone" onclick="abrirJanela('editor-texto', 'Editor de Texto')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2541/2541991.png" alt="Editor">
+            <span>Editor</span>
+        </div>
+
+        <div class="icone" onclick="abrirJanela('navegador', 'Navegador Web')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3003/3003101.png" alt="Net">
+            <span>Navegador</span>
+        </div>
+        
+        <div class="icone" onclick="abrirJanela('galeria', 'Galeria'); alternarMenu()">
+            <img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png" alt="App">
+            <span>galeria</span>
+        </div>
+        
+        <div class="icone" onclick="abrirJanela('musica', 'Music Player')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3844/3844720.png" alt="App">
+            <span>Música</span>
+        </div>
+        
+        <div class="icone" onclick="abrirJanela('snake', 'Snake Game')">
+            <img src="https://cdn-icons-png.flaticon.com/512/528/528105.png" alt="Snake">
+            <span>Snake</span>
+        </div>
+        
+        <div class="icone" onclick="abrirJanela('sistema-info', 'Informações do Sistema')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png" alt="Info">
+            <span>Info Sistema</span>
+        </div>
+        
+        <div class="icone" onclick="abrirJanela('youtube-real', 'YouTube')">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+            <span>YouTube</span>
+        </div>
+        
+    </main>
+
+    <footer id="barra-tarefas">
+        
+        <button id="btn-iniciar" onclick="alternarMenu()">🚀</button>
+        
+        <div id="janelas-abertas"></div>
+        
+        <div id="relogio">00:00:00</div>
+
+        <div id="menu-container" class="menu-escondido">
+            <div class="menu-cabecalho">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil" width="40">
+                <span>Usuário WebOS</span>
+            </div>
+            
+            <div class="menu-lista">
+                <div class="menu-item" onclick="abrirJanela('calculadora', 'Calculadora'); alternarMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2344/2344132.png" width="30">
+                    Calculadora
+                </div>
+                
+                <div class="menu-item" onclick="abrirJanela('editor-texto', 'Editor de Texto'); alternarMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2541/2541991.png" width="30">
+                    Editor de Texto
+                </div>
+                
+                <div class="menu-item" onclick="abrirJanela('configuracoes', 'Configurações'); alternarMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="30">
+                    Ajustes
+                </div>
+
+                <div class="menu-item" onclick="abrirJanela('navegador', 'Navegador Web'); alternarMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3003/3003101.png" width="30">
+                    Navegador Web
+                </div>
+                
+                <div class="menu-item" onclick="abrirJanela('galeria', 'Galeria'); alternarMenu()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png" width="30">
+                    Galeria
+                </div>
+                
+                <div class="menu-item" onclick="abrirJanela('musica', 'Music Player')">
+                     <img src="https://cdn-icons-png.flaticon.com/512/3844/3844720.png" width="30">
+                     Música
+                </div>
+                
+                <div class="menu-item" onclick="abrirJanela('snake', 'Snake Game'); alternarMenu()">
+                     <img src="https://cdn-icons-png.flaticon.com/512/528/528105.png" width="30">
+                     Snake Game
+                </div>
+                
+                <div class="menu-item" onclick="abrirJanela('sistema-info', 'Informações do Sistema'); alternarMenu()">
+                     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png" width="30">
+                     Sobre o Dispositivo
+               </div>
+                
+               <div class="menu-item" onclick="abrirJanela('youtube-real', 'YouTube'); alternarMenu()">
+                     <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" width="30">
+                     YouTube
+               </div>
+                
+            </div>
+            
+            <div class="menu-rodape" onclick="location.reload()">
+                Reiniciar Sistema
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/relogio.js"></script>
+    <script src="scripts/janelas.js"></script>
+    <script src="scripts/sistema.js"></script>
+</body>
+</html>
