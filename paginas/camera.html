@@ -14,21 +14,28 @@
             height: 100vh;
             color: white;
             font-family: sans-serif;
+            overflow: hidden;
         }
 
-        video {
+        #video {
             width: 100%;
-            height: 70%;
+            height: 75%;
             object-fit: cover;
-            border-radius: 0 0 20px 20px;
+            /* Garante que o vídeo não fique espelhado na câmera traseira */
+            transform: scaleX(1); 
+        }
+
+        .espelhado {
+            transform: scaleX(-1) !important;
         }
 
         .controles {
-            height: 30%;
+            height: 25%;
             display: flex;
             align-items: center;
             justify-content: space-around;
             width: 100%;
+            background: #000;
         }
 
         .btn-foto {
@@ -36,54 +43,88 @@
             height: 70px;
             background: white;
             border-radius: 50%;
-            border: 5px solid rgba(255,255,255,0.3);
+            border: 5px solid #333;
             cursor: pointer;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
 
-        .btn-foto:active { transform: scale(0.9); }
+        .btn-alternar {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <video id="video" autoplay playsinline></video>
+    <video id="video" autoplay playsinline muted></video>
 
     <div class="controles">
-        <div style="width: 50px;"></div> <button class="btn-foto" onclick="tirarFoto()"></button>
-        <button onclick="alternarCamera()" style="background:none; border:none; color:white; font-size:24px;">🔄</button>
+        <div style="width: 44px;"></div>
+        <button class="btn-foto" onclick="tirarFoto()"></button>
+        <button class="btn-alternar" onclick="alternarCamera()">🔄</button>
     </div>
 
     <script>
         const video = document.getElementById('video');
         let currentStream;
-        let useFrontCamera = true;
+        let modoCamera = "user"; // "user" = frontal, "environment" = traseira
 
         async function iniciarCamera() {
+            // Para qualquer stream ativa antes de começar uma nova
             if (currentStream) {
                 currentStream.getTracks().forEach(track => track.stop());
             }
 
             const constraints = {
-                video: { facingMode: (useFrontCamera ? "user" : "environment") }
+                video: { 
+                    facingMode: modoCamera,
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
             };
 
             try {
                 currentStream = await navigator.mediaDevices.getUserMedia(constraints);
                 video.srcObject = currentStream;
+                
+                // Aplica efeito espelhado apenas na câmera frontal (user)
+                if (modoCamera === "user") {
+                    video.classList.add('espelhado');
+                } else {
+                    video.classList.remove('espelhado');
+                }
+
+                // Força o play caso o navegador pause automaticamente
+                video.onloadedmetadata = () => {
+                    video.play().catch(e => console.log("Erro no autoplay:", e));
+                };
+
             } catch (err) {
-                alert("Erro ao acessar câmera: " + err);
+                console.error("Erro:", err);
+                alert("Erro: Certifique-se de que não há outro app usando a câmera.");
             }
         }
 
         function alternarCamera() {
-            useFrontCamera = !useFrontCamera;
+            modoCamera = (modoCamera === "user") ? "environment" : "user";
             iniciarCamera();
         }
 
         function tirarFoto() {
-            alert("Sorria! 📸 (Simulação: Foto capturada)");
+            const flash = document.createElement('div');
+            flash.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:white;z-index:99;opacity:0.8;";
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 100);
+            
+            console.log("Captura simulada");
         }
 
-        iniciarCamera();
+        // Inicia assim que a página carrega
+        window.onload = iniciarCamera;
     </script>
 </body>
 </html>
