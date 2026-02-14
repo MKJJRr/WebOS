@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { 
+            box-sizing: border-box; 
+            -webkit-font-smoothing: antialiased; /* Melhora a nitidez da fonte no iOS/Android */
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            /* Prioridade para fontes legíveis e modernas */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0a0a0a; 
+            color: #ffffff;
+            line-height: 1.5;
+        }
+
+        .container { 
+            max-width: 500px; 
+            margin: auto; 
+        }
+        
+        .card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        h2 { 
+            margin-top: 0; 
+            color: #4facfe; /* Tom de azul mais brilhante para contraste */
+            font-size: 15px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+            border-bottom: 1px solid rgba(79, 172, 254, 0.3);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 800; /* Extra negrito para o título */
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Estilo para a etiqueta (lado esquerdo) */
+        .label { 
+            color: #b0b0b0; 
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        /* Estilo para o valor (lado direito) */
+        .valor { 
+            color: #ffffff; 
+            /* Fonte monoespaçada para parecer dado técnico de sistema */
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace; 
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
+            border-radius: 5px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Cores de Status */
+        .status-online { 
+            color: #00ff88; 
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+        }
+        
+        .status-offline { 
+            color: #ff4b2b; 
+            font-weight: bold;
+        }
+
+        #gpu {
+            font-size: 11px; /* GPU costuma ter nomes longos */
+            max-width: 180px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>📂 Processamento</h2>
+        <div class="info-row"><span class="label">Processador:</span> <span class="valor" id="cpu">...</span></div>
+        <div class="info-row"><span class="label">Memória RAM:</span> <span class="valor" id="ram">...</span></div>
+        <div class="info-row"><span class="label">Placa Gráfica:</span> <span class="valor" id="gpu">...</span></div>
+    </div>
+
+    <div class="card">
+        <h2>⚡ Energia & Bateria</h2>
+        <div class="info-row"><span class="label">Nível Atual:</span> <span class="valor" id="bat-nivel">...</span></div>
+        <div class="info-row"><span class="label">Alimentação:</span> <span class="valor" id="bat-estado">...</span></div>
+    </div>
+
+    <div class="card">
+        <h2>📡 Conectividade</h2>
+        <div class="info-row"><span class="label">Tipo de Rede:</span> <span class="valor" id="rede-tipo">...</span></div>
+        <div class="info-row"><span class="label">Velocidade:</span> <span class="valor" id="rede-velocidade">...</span></div>
+        <div class="info-row"><span class="label">Status:</span> <span class="valor" id="online">...</span></div>
+    </div>
+
+    <div class="card">
+        <h2>📱 Hardware & Tela</h2>
+        <div class="info-row"><span class="label">Resolução:</span> <span class="valor" id="res">...</span></div>
+        <div class="info-row"><span class="label">Sistema:</span> <span class="valor" id="plataforma">...</span></div>
+    </div>
+</div>
+
+<script>
+    // CPU e RAM
+    document.getElementById('cpu').innerText = (navigator.hardwareConcurrency || "8") + " Threads";
+    document.getElementById('ram').innerText = navigator.deviceMemory ? navigator.deviceMemory + " GB Est." : "Não Reportado";
+    document.getElementById('plataforma').innerText = navigator.platform;
+
+    // GPU
+    function getGPU() {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (gl) {
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            return debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "GPU Genérica";
+        }
+        return "N/A";
+    }
+    document.getElementById('gpu').innerText = getGPU();
+
+    // Bateria
+    if ('getBattery' in navigator) {
+        navigator.getBattery().then(bat => {
+            const update = () => {
+                document.getElementById('bat-nivel').innerText = Math.round(bat.level * 100) + "%";
+                document.getElementById('bat-estado').innerText = bat.charging ? "Carregando" : "Bateria";
+            };
+            update();
+            bat.onlevelchange = update;
+            bat.onchargingchange = update;
+        });
+    }
+
+    // Rede
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    function updateNet() {
+        document.getElementById('rede-tipo').innerText = conn ? conn.effectiveType.toUpperCase() : "WiFi/Dados";
+        document.getElementById('rede-velocidade').innerText = conn ? conn.downlink + " Mbps" : "---";
+        document.getElementById('online').innerHTML = navigator.onLine ? 
+            '<span class="status-online">CONECTADO</span>' : 
+            '<span class="status-offline">DESCONECTADO</span>';
+    }
+    updateNet();
+    window.addEventListener('online', updateNet);
+    window.addEventListener('offline', updateNet);
+
+    // Tela
+    document.getElementById('res').innerText = window.screen.width + "x" + window.screen.height;
+</script>
+</body>
+</html>

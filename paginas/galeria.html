@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #111; 
+            color: white; 
+            padding: 10px;
+        }
+        h2 { padding: 15px 5px; font-weight: 300; }
+        
+        .grade-fotos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Duas colunas no celular */
+            gap: 10px;
+        }
+
+        .foto-item {
+            aspect-ratio: 1 / 1;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: transform 0.2s;
+        }
+
+        .foto-item:active {
+            transform: scale(0.95);
+        }
+
+        /* Modal simples para ver a foto maior */
+        #visualizador {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #visualizador img { max-width: 95%; max-height: 90%; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <h2>Minha Galeria</h2>
+
+    <div class="grade-fotos">
+        <div class="foto-item" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400')" onclick="verFoto(this.style.backgroundImage)"></div>
+        <div class="foto-item" style="background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400')" onclick="verFoto(this.style.backgroundImage)"></div>
+        <div class="foto-item" style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400')" onclick="verFoto(this.style.backgroundImage)"></div>
+        <div class="foto-item" style="background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400')" onclick="verFoto(this.style.backgroundImage)"></div>
+        <div class="foto-item" style="background-image: url('https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400')" onclick="verFoto(this.style.backgroundImage)"></div>
+        <div class="foto-item" style="background-image: url('https://images.unsplash.com/photo-1426604966149-7e15a5a7d5df?w=400')" onclick="verFoto(this.style.backgroundImage)"></div>
+    </div>
+
+    <div id="visualizador" onclick="this.style.display='none'">
+        <img src="" id="foto-grande">
+    </div>
+
+    <script>
+        function verFoto(bgUrl) {
+            // Extrai a URL limpa do background-image
+            const url = bgUrl.replace('url("', '').replace('")', '');
+            document.getElementById('foto-grande').src = url;
+            document.getElementById('visualizador').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #ffffff;
+        }
+
+        /* Barra de ferramentas superior */
+        .barra-ferramentas {
+            background: #f1f1f1;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid #ddd;
+            overflow-x: auto; /* Permite rolar os botões se a tela for muito pequena */
+        }
+
+        /* Botões grandes para facilitar o toque no celular */
+        .btn-editor {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #4285f4;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-editor:active {
+            background: #3367d6;
+        }
+
+        .btn-limpar {
+            background: #ea4335;
+        }
+
+        /* Área de digitação */
+        #area-texto {
+            flex-grow: 1;
+            padding: 20px;
+            font-size: 18px; /* Fonte maior para leitura no celular */
+            line-height: 1.5;
+            border: none;
+            outline: none;
+            resize: none;
+            background: #fffdf5; /* Tom leve de papel */
+            color: #2c3e50;
+        }
+
+        /* Indicador de status */
+        .status {
+            padding: 5px 15px;
+            font-size: 12px;
+            background: #eee;
+            color: #666;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="barra-ferramentas">
+        <button class="btn-editor" onclick="salvarArquivo()">Salvar</button>
+        <button class="btn-editor btn-limpar" onclick="novoArquivo()">Limpar</button>
+    </div>
+
+    <textarea id="area-texto" placeholder="Toque aqui para começar a escrever..."></textarea>
+
+    <div class="status" id="info-status">Nenhum arquivo salvo</div>
+
+    <script>
+        const campoTexto = document.getElementById('area-texto');
+        const infoStatus = document.getElementById('info-status');
+
+        // Carrega o conteúdo automaticamente ao abrir o app
+        window.onload = function() {
+            const conteudoSalvo = localStorage.getItem('webos_documento');
+            if (conteudoSalvo) {
+                campoTexto.value = conteudoSalvo;
+                infoStatus.innerText = "Última alteração carregada";
+            }
+        };
+
+        function salvarArquivo() {
+            const texto = campoTexto.value;
+            if (texto.trim() === "") {
+                alert("O documento está vazio!");
+                return;
+            }
+
+            // Salva no armazenamento local do navegador
+            localStorage.setItem('webos_documento', texto);
+            
+            const agora = new Date();
+            const hora = agora.getHours().toString().padStart(2, '0') + ":" + agora.getMinutes().toString().padStart(2, '0');
+            infoStatus.innerText = "Salvo às " + hora;
+            
+            alert("Documento salvo com sucesso!");
+        }
+
+        function novoArquivo() {
+            if (campoTexto.value !== "") {
+                if (confirm("Deseja apagar tudo? As alterações não salvas serão perdidas.")) {
+                    campoTexto.value = "";
+                    infoStatus.innerText = "Documento limpo";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

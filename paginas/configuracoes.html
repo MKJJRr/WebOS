@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #f0f0f0; 
+            color: #333; 
+        }
+        h2 { border-bottom: 2px solid #ccc; padding-bottom: 10px; }
+        .secao { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .label { font-weight: bold; display: block; margin-bottom: 10px; }
+        
+        .grid-papeis { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px; 
+        }
+        .opcao-papel { 
+            width: 100%; 
+            height: 80px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            border: 3px solid transparent;
+            background-size: cover;
+            background-position: center;
+        }
+        .opcao-papel:active { border-color: #4285f4; }
+
+        .btn-reset { 
+            width: 100%; 
+            padding: 15px; 
+            background: #ea4335; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Configurações</h2>
+
+    <div class="secao">
+        <span class="label">Alterar Papel de Parede</span>
+        <div class="grid-papeis">
+            <div class="opcao-papel" 
+                 style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400');" 
+                 onclick="mudarFundo('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1350&q=80')">
+            </div>
+            <div class="opcao-papel" 
+                 style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400');" 
+                 onclick="mudarFundo('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1350&q=80')">
+            </div>
+            <div class="opcao-papel" 
+                 style="background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=400');" 
+                 onclick="mudarFundo('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1350&q=80')">
+            </div>
+            <div class="opcao-papel" 
+                 style="background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400');" 
+                 onclick="mudarFundo('https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1350&q=80')">
+            </div>
+        </div>
+    </div>
+
+    <div class="secao">
+        <button class="btn-reset" onclick="limparTudo()">Limpar Dados do Sistema</button>
+    </div>
+
+    <script>
+        function mudarFundo(url) {
+            // Salva a URL no localStorage do navegador
+            localStorage.setItem('papelParede', url);
+            
+            // Aplica imediatamente ao elemento body do sistema (o pai do iframe)
+            window.parent.document.body.style.backgroundImage = `url('${url}')`;
+        }
+
+        function limparTudo() {
+            if(confirm("Isso apagará seus textos e configurações. Continuar?")) {
+                localStorage.clear();
+                window.parent.location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

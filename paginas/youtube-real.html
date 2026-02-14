@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: #000;
+        }
+        /* Faz o site ocupar 100% da janela do seu WebOS */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* Loader simples enquanto o site carrega */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading">Carregando YouTube...</div>
+
+    <iframe 
+        src="https://www.youtube.com/embed?listType=search&list=musicas+mais+tocadas+2026" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+
+    <script>
+        // Remove a mensagem de carregamento após alguns segundos
+        setTimeout(() => {
+            const loading = document.querySelector('.loading');
+            if(loading) loading.style.display = 'none';
+        }, 3000);
+    </script>
+</body>
+</html>
